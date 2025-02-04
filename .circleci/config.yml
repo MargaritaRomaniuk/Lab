@@ -1,0 +1,31 @@
+version: 2.1
+
+workflows:
+    versin: 2
+    build:
+        jobs:
+            - build:
+                filters:
+                    branches:
+                        only:
+                            - main
+
+jobs:
+    build:
+        working_directory: ~/devops-lab-3-task
+        docker:
+            - image: circleci/node:10.16.3
+        steps:
+            - checkout
+            - run:
+                name: update-npm
+                command: 'sudo npm install -g npm@5'
+            - restore_cashe:
+                key: dependency-cashe-{{ checksum "package-lock.json" }}
+            - run:
+                name: install-npm
+                command: npm install
+            - save_cashe:
+                key: dependency-cashe-{{ checksum "package-lock.json" }}
+                paths:
+                    - ./node_modules
