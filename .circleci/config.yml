@@ -26,12 +26,12 @@ jobs:
       - checkout
       - run:
           name: Update npm
-          command: 'npm install -g npm@5'
+          command: 'sudo npm install -g npm@5' # ✅ Use sudo to fix permission issue
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
           name: Install npm dependencies
-          command: npm install
+          command: npm install --unsafe-perm # ✅ Fix permission issue during install
       - save_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
           paths:
@@ -50,5 +50,7 @@ jobs:
     steps:
       - run:
           name: Deploy Application
-          command: ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_PUBLIC_DNS \
-            "rm -rf Lab/; git clone https://github.com/MargaritaRomaniuk/Lab.git; source Lab/deploy.sh"
+          command: |
+            ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_PUBLIC_DNS \
+              "rm -rf Lab/; git clone https://github.com/MargaritaRomaniuk/Lab.git; \
+              cd Lab; source deploy.sh"
