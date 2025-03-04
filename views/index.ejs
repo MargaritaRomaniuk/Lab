@@ -1,11 +1,34 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+
+<head>
+  <title><%= title %></title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+
+  <a href="/math/add">Calculator</a>
+  <a href="/math/add">Add</a>
+  <a href="/math/divide">Divide</a>
+  <a href="/math/multiply">Multiply</a>
+  <a href="/math/subtract">Subtract</a>
+
+  <h1><%= title %></h1>
+  <p>Welcome to the calculator application</p>
+
+  <!-- The form submits data to /math/add -->
+  <form action="/math/add" method="get">
+    <input type="number" name="num1" required /> +
+    <input type="number" name="num2" required />
+    <br>
+    <button type="submit">Submit</button>
+  </form>
+
+  <!-- Only show result if it's defined -->
+  <% if (typeof result !== "undefined") { %>
+    <p><%= num1 %> <%= symbol %> <%= num2 %> = <%= result %></p>
+  <% } %>
+
+</body>
 </html>

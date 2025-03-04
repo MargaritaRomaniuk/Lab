@@ -1,61 +1,65 @@
 var express = require('express');
 var router = express.Router();
-var utils = require('../modules/utils')
+var utils = require('../modules/utils');
 
-/* GET home page. */
+// Redirect home page to /math/add
 router.get('/', function(req, res, next) {
-  res.redirect("/math/add");
-
+  res.redirect("/math/add");  
 });
 
-
-/* GET home page. */
+/* Addition Route */
 router.get('/add', function(req, res, next) {
-  var result = 0
-  var {num1, num2} = req.query
-  if(num1 !=='' && num2 !=='') {
-      result = utils.add(parseFloat(num1), parseFloat(num2))
-  }
-  res.render('compute', { title: 'add' ,result:result, num1, num2, symbol:"+" });
+  let result = null;
+  let { num1, num2 } = req.query;
 
+  if (num1 && num2) {
+    result = utils.add(parseFloat(num1), parseFloat(num2));
+  }
+
+  res.render('compute', { title: 'Add', result, num1, num2, symbol: "+" });
 });
 
+/* Division Route */
 router.get('/divide', function(req, res, next) {
-  var result = 0
-  var {num1, num2} = req.query
-  if(num1 !=='' && num2 !=='') {
-    try {
-      result = utils.divide(parseFloat(num1), parseFloat(num2))
-    } catch (e) {
-      result = "error"
+  let result = null;
+  let { num1, num2 } = req.query;
+
+  if (num1 && num2) {
+    num1 = parseFloat(num1);
+    num2 = parseFloat(num2);
+
+    if (num2 === 0) {
+      result = "Error: Division by zero";  // Prevent division by zero
+    } else {
+      result = utils.divide(num1, num2);
     }
-      
   }
-  res.render('compute', { title: 'divide' ,result:result, num1, num2, symbol:"/" });
 
+  res.render('compute', { title: 'Divide', result, num1, num2, symbol: "/" });
 });
 
+/* Multiplication Route */
 router.get('/multiply', function(req, res, next) {
-  var result = 0
-  var {num1, num2} = req.query
-  if(num1 !=='' && num2 !=='') {
-      result = utils.multiply(parseFloat(num1), parseFloat(num2))
-  }
-  res.render('compute', { title: 'multiply' ,result:result, num1, num2, symbol:"*" });
+  let result = null;
+  let { num1, num2 } = req.query;
 
+  if (num1 && num2) {
+    result = utils.multiply(parseFloat(num1), parseFloat(num2));
+  }
+
+  res.render('compute', { title: 'Multiply', result, num1, num2, symbol: "*" });
 });
 
-
+/* Subtraction Route */
 router.get('/subtract', function(req, res, next) {
-  var result = 0
-  var {num1, num2} = req.query
-  console.log(req.query)
-  if(num1 !=='' && num2 !=='') {
-      result = utils.subtract(parseFloat(num1), parseFloat(num2))
+  let result = null;
+  let { num1, num2 } = req.query;
+
+  if (num1 && num2) {
+    result = utils.subtract(parseFloat(num1), parseFloat(num2));
   }
-  res.render('compute', { title: 'subtract' ,result:result, num1, num2, symbol:"-" });
 
+  res.render('compute', { title: 'Subtract', result, num1, num2, symbol: "-" });
 });
-
 
 module.exports = router;
